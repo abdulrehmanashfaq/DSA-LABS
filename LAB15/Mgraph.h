@@ -236,6 +236,7 @@ class Mgraph{
 
             cout << endl ;
 
+            delete[] visited ;
         
 
 

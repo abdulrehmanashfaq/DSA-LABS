@@ -1,11 +1,12 @@
 #include<iostream>
 #include"Mgraph.h"
+#include"Lgraph.h"
 using namespace std ;
 int main(void){
 
 
 
-    Mgraph g(6,true);
+    Lgraph g(6,true);
     
     g.addEdge(4,0,10);
     g.addEdge(2,3,10);
