@@ -2,6 +2,7 @@
 #define Mgraph_H   
 #include<iostream>
 #include<queue>
+#include<stack>
 using namespace std ;
 class Mgraph{
 
@@ -10,11 +11,13 @@ class Mgraph{
 
     int vertex ;
     int **adj ;
+    bool directed ;
 
     public :
 
-    Mgraph(int vertex){
+    Mgraph(int vertex,bool directed = true ){
 
+        this->directed = directed ;
         this->vertex = vertex;
 
         adj = new int *[vertex];
@@ -33,7 +36,27 @@ class Mgraph{
 
     }
 
-    void addEdge(int v, int u ,int weight){
+    void addEdge(int u, int v ,int weight){
+
+        if (directed){
+
+            if (adj[u][v] == 0 ){
+            
+                adj[u][v] = weight ;
+
+            }
+            else{
+
+            cout << "Breaking the previous link " << endl;
+            adj[u][v] = weight ;
+            
+
+            }
+
+            return ;
+
+
+        }
 
         if (adj[u][v] == 0 ){
 
@@ -154,6 +177,21 @@ class Mgraph{
         delete[] visited;
     }
 
+    void SortHelper(int start , stack<int>&s,bool *visited){
+
+
+        visited[start] = true ;
+
+        for (int i = 0 ;i<vertex;i++){
+
+            if (adj[start][i]!=0 && visited[i]!=true){
+                SortHelper(i,s,visited);
+            }
+
+
+        }
+
+        s.push(start);
 
 
 
@@ -163,7 +201,50 @@ class Mgraph{
 
 
 
+    }
 
+        void topologicalSort(){
+
+
+            if (!directed){
+                cout << " Graph is not Directed " << endl ;
+                return ; 
+            }
+
+
+            stack<int>s;
+            bool *visited = new bool[vertex];
+            for (int i = 0 ;i<vertex;i++){
+
+                visited[i] = false;
+
+            }
+
+            for (int i=0;i<vertex;i++){
+            if(!visited[i])
+            SortHelper( i , s, visited);
+            }
+
+            
+            while(!s.empty()){
+
+                int num = s.top();
+                s.pop() ;
+                cout << num << " ";
+
+            }
+
+            cout << endl ;
+
+        
+
+
+
+
+
+
+
+        }
 };
 
 #endif          
