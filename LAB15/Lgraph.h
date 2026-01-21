@@ -12,6 +12,8 @@
 #include <vector>
 #include <limits.h>
 #include <queue>
+#include <string>
+#include <map>
 
 using namespace std;
 
@@ -26,9 +28,11 @@ class Lgraph {
 private:
     int V;
     bool directed;
-    
-    
+
+    map<string,int> str_to_id ;
+    vector<string>str_cont;
     list<Edge> *adj;
+    int id = 0 ;
 
 public:
 
@@ -38,6 +42,7 @@ public:
         this->directed = directed;
         // Allocate array of lists
         adj = new list<Edge>[V];
+        str_cont.resize(V);
     }
 
     
@@ -55,6 +60,33 @@ public:
             adj[v].push_back({u, weight});
         }
     }
+
+    int find_id(string s){
+
+        if (str_to_id.find(s) == str_to_id.end() ){
+            str_to_id[s] = id ;
+            id++;
+        }
+        return str_to_id[s];
+
+    }
+
+    void addEdge(string s , string t ,int weight){
+
+        int u = find_id(s);
+        int v = find_id(t);
+        str_cont[u] = s;
+        str_cont[v] = t; 
+
+        adj[u].push_back({v,weight});
+        
+        if (!directed){
+            adj[v].push_back({u,weight});
+        }
+
+    }
+
+    
 
     
     void bfs(int start) {
@@ -140,8 +172,18 @@ public:
         cout << endl;
     }
 
-    
-    void digkstra( int src ){
+    void digkstra(string n){
+
+        int src = find_id(n);
+        input_validated_digkstra(src,true);
+
+    }
+    void digkstra(int n){
+        input_validated_digkstra(n,false);
+
+    }
+    void input_validated_digkstra( int src ,bool str){
+
 
         vector<int>dis(V,INT_MAX);
         priority_queue<pair<int,int> ,  vector<pair<int,int>> ,greater<pair<int,int>> > pq ;
@@ -171,9 +213,25 @@ public:
 
         }
 
+        if (!str){
         for (int i=0 ;i<V ;i++){
 
             cout << src << " -> " << i << " : " << dis[i] << endl ;
+
+        }
+    }
+        else{
+
+            for (int i=0 ;i<id ;i++){
+
+            if (dis[i] == INT_MAX) {
+                cout << str_cont[src] << " -> " << str_cont[i] << " : Unreachable" << endl;
+                continue ;
+    }
+
+            cout << str_cont[src] << " -> " << str_cont[i] << " : " << dis[i] << endl ;
+
+        }
 
         }
 
