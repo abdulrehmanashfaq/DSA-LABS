@@ -9,7 +9,9 @@
 #include <vector>
 #include <queue>
 #include <stack>
-
+#include <vector>
+#include <limits.h>
+#include <queue>
 
 using namespace std;
 
@@ -139,7 +141,45 @@ public:
     }
 
     
-    
+    void digkstra( int src ){
+
+        vector<int>dis(V,INT_MAX);
+        priority_queue<pair<int,int> ,  vector<pair<int,int>> ,greater<pair<int,int>> > pq ;
+        dis[src] = 0 ;
+        pq.push({0,src});
+
+
+        while (!pq.empty()){
+
+            int u = pq.top().second ;
+            pq.pop();
+
+            for ( auto e : adj[u] ){
+
+                if (dis[e.dest] > dis[u]+e.weight ){
+
+                    dis[e.dest] = dis[u]+e.weight;
+                    pq.push({dis[e.dest] , e.dest});
+                }
+
+
+            }
+
+
+
+
+
+        }
+
+        for (int i=0 ;i<V ;i++){
+
+            cout << src << " -> " << i << " : " << dis[i] << endl ;
+
+        }
+
+
+
+    }
 
     
     
