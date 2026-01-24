@@ -272,6 +272,62 @@ public:
 
     }
 
+
+
+    void prims(int start) {
+
+    if (directed) {
+        cout << "Prim's Algorithm works only on undirected graphs." << endl;
+        return;
+    }
+
+    vector<int> key(V, INT_MAX);     // Minimum weight to reach each vertex
+    vector<int> parent(V, -1);       // Store MST structure
+    vector<bool> inMST(V, false);    // Track vertices included in MST
+
+    // Min heap {key, vertex}
+    priority_queue<
+        pair<int,int>,
+        vector<pair<int,int>>,
+        greater<pair<int,int>>
+    > pq;
+
+    key[start] = 0;
+    pq.push({0, start});
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        if (inMST[u]) continue;
+        inMST[u] = true;
+
+        for (auto e : adj[u]) {
+            int v = e.dest;
+            int w = e.weight;
+
+            if (!inMST[v] && w < key[v]) {
+                key[v] = w;
+                parent[v] = u;
+                pq.push({key[v], v});
+            }
+        }
+    }
+
+    int totalCost = 0;
+    cout << "Edges in MST:\n";
+
+    for (int i = 0; i < V; i++) {
+        if (parent[i] != -1) {
+            cout << parent[i] << " -> " << i
+                 << " (weight = " << key[i] << ")\n";
+            totalCost += key[i];
+        }
+    }
+
+    cout << "Total cost of MST: " << totalCost << endl;
+}
+
     
     
 };
