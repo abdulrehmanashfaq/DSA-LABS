@@ -1,13 +1,26 @@
 #include <iostream>
 #include "Lgraph.h" 
+#include "Mgraph.h"
+
 
 using namespace std;
 
 int main() {
+
+
+    Lgraph span(5,true);
+    span.addEdge(4,0,10);
+    span.addEdge(4,3,10);
+    span.addEdge(0,1,10);
+    span.addEdge(1,2,10);
+    span.addEdge(2,3,10);
+    span.addEdge(3,1,10);
+
+    span.spanningtree(4);
     
     Lgraph PunjabMap(16); 
 
-    
+    cout << endl ;
 
     
     PunjabMap.addEdge("Lahore", "Gujranwala", 80);

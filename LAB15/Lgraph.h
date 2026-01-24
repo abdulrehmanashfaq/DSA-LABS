@@ -239,6 +239,39 @@ public:
 
     }
 
+
+    void spanning_helper(int start ,vector<bool>&visited){
+
+        visited[start]  = true ;
+           
+    
+        for (auto i : adj[start]){
+            if(! visited[i.dest]){
+            cout << start << " -> " << i.dest << endl ;
+            spanning_helper(i.dest,visited);
+            }
+        }
+
+
+    }
+    void spanningtree(int start ){
+
+        vector<bool>visited(V,false) ;
+
+        spanning_helper(start,visited);
+
+        for (int i=0 ;i<V ; i++){
+
+        if (!visited[i]){
+            spanning_helper(i,visited);
+        }
+
+        }
+
+
+
+    }
+
     
     
 };
